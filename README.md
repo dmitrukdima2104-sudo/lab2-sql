@@ -1,16 +1,20 @@
-# Звіт до лабораторної роботи №2: Створення складних SQL запитів
+# Лабораторна робота 2.Створення складних sql запитів
 
-**Студент:** Дмитрук Дмитро (група ІПЗ-31)  
-**База даних:** `technomart` (supabase — `dmitrukdima2104-sudo's Project`)
+## Загальна інформація
+
+**Здобувач освіти:** [Дмитрук Дмитро Дмитрович]
+**Група:** [ІПЗ-31]
+**Обраний рівень складності:** [2]
+
 
 ---
 
-## 🎯 Мета роботи
+##  Мета роботи
 Набути практичних навичок створення складних SQL запитів для аналізу даних, опанувати техніки з'єднання таблиць, використання агрегатних функцій, групування даних, підзапитів та віконних функцій у реляційних базах даних.
 
 ---
 
-## 📑 Хід виконання роботи та результати запитів
+##  Хід виконання роботи та результати запитів
 
 ### Рівень 1: З'єднання таблиць, агрегатні функції та базові підзапити
 
@@ -24,7 +28,8 @@ INNER JOIN categories c ON p.category_id = c.category_id
 INNER JOIN suppliers s ON p.supplier_id = s.supplier_id
 ORDER BY c.category_name, p.product_name;
 ```
-* **Скріншот результату:** `(/screenshots/виклик1.1.png)`
+* **Скріншот результату:**
+* ![Виклик 1.1](screenshots/виклик1.1.png)
 
 #### 2. LEFT JOIN — Клієнти та їхні замовлення
 * **Опис:** Вибірка всіх клієнтів (включно з тими, хто не робив замовлень) з підрахунком кількості замовлень.
@@ -38,7 +43,8 @@ LEFT JOIN regions r ON c.region_id = r.region_id
 GROUP BY c.customer_id, c.contact_name, c.customer_type, r.region_name
 ORDER BY order_count DESC;
 ```
-* **Скріншот результату:** `![Виклик 1.2](screenshots/виклик1.2.png)`
+* **Скріншот результату:**
+* ![Виклик 1.2](screenshots/виклик1.2.png) 
 
 #### 3. Множинне з'єднання (6 таблиць) — Деталізація замовлень
 * **Опис:** З'єднання таблиць `orders`, `customers`, `order_items`, `products`, `categories` та `suppliers` для формування повного звіту.
@@ -61,7 +67,8 @@ JOIN categories c ON p.category_id = c.category_id
 JOIN suppliers s ON p.supplier_id = s.supplier_id
 ORDER BY o.order_date DESC;
 ```
-* **Скріншот результату:** `![Виклик 1.3](./screenshots/виклик1.3.png)`
+* **Скріншот результату:**
+* ![Виклик 1.3](./screenshots/виклик1.3.png)
 
 #### 4. Агрегатні функції та GROUP BY — Статистика по категоріях
 * **Опис:** Підрахунок кількості товарів, середньої, мінімальної та максимальної ціни в розрізі категорій.
@@ -77,7 +84,8 @@ LEFT JOIN products p ON c.category_id = p.category_id
 GROUP BY c.category_id, c.category_name
 ORDER BY product_count DESC;
 ```
-* **Скріншот результату:** `![Виклик 1.4](./screenshots/виклик1.4.png)`
+* **Скріншот результату:**
+* ![Виклик 1.4](./screenshots/виклик1.4.png)
 
 #### 5. Фільтрація груп через HAVING — Продажі за регіонами та активні постачальники
 * **Опис:** Розрахунок загального виторгу за регіонами з урахуванням знижок та фільтрація через `HAVING`. Також вибірка постачальників із кількістю товарів > 2.
@@ -105,10 +113,14 @@ GROUP BY s.supplier_id, s.company_name
 HAVING COUNT(p.product_id) > 2
 ORDER BY products_count DESC;
 ```
-* **Скріншот результату:** `![Виклик 1.5](./screenshots/виклик1.5.png)`, `![Виклик 1.6](./screenshots/виклик1.6.png)`
+* **Скріншот результату:**
+* ![Виклик 1.5](./screenshots/виклик1.5.png), ![Виклик 1.6](./screenshots/виклик1.6.png)
 
 #### 6. Базові та корельовані підзапити
-* **Товари дорожчі за середню ціну у своїй категорії `![Виклик 1.7](./screenshots/виклик1.7.png)`:**
+* **Товари дорожчі за середню ціну у своїй категорії
+* *Скріншот
+* ![Виклик 1.7](./screenshots/виклик1.7.png):**
+* SQL Код
 ```sql
 SELECT p.product_name, p.unit_price, c.category_name
 FROM products p
@@ -120,7 +132,10 @@ WHERE p.unit_price > (
 )
 ORDER BY c.category_name, p.unit_price DESC;
 ```
-* **Клієнти з замовленнями у 2024 році через IN `![Виклик 1.8](./screenshots/виклик1.8.png)`:**
+* **Клієнти з замовленнями у 2024 році через IN
+* *Скріншот
+* ![Виклик 1.8](./screenshots/виклик1.8.png):**
+* SQL Код
 ```sql
 SELECT customer_id, contact_name, customer_type
 FROM customers
@@ -130,7 +145,10 @@ WHERE customer_id IN (
     WHERE EXTRACT(YEAR FROM order_date) = 2024
 );
 ```
-* **Підзапит у SELECT для загальної кількості продажів `![Виклик 1.9](./screenshots/виклик1.9.png)`:**
+* **Підзапит у SELECT для загальної кількості продажів
+* *Скріншот
+* ![Виклик 1.9](./screenshots/виклик1.9.png):**
+* SQL Код
 ```sql
 SELECT 
     p.product_name,
@@ -149,7 +167,7 @@ ORDER BY total_sold_quantity DESC;
 ### Рівень 2: Складні з'єднання та віконні функції
 
 #### 7. RIGHT JOIN — Аналіз категорій
-* **SQL Код `![Виклик 2.1](./screenshots/виклик2.1.png)`:**
+* SQL Код
 ```sql
 SELECT c.category_name,
       COUNT(p.product_id) AS products_count,
@@ -159,9 +177,10 @@ RIGHT JOIN categories c ON p.category_id = c.category_id
 GROUP BY c.category_id, c.category_name
 ORDER BY products_count DESC;
 ```
-
+*Скріншот
+* ![Виклик 2.1](./screenshots/виклик2.1.png):**
 #### 8. Самоз'єднання (Self-Join) — Ієрархія керівників
-* **SQL Код `![Виклик 2.2](./screenshots/виклик2.2.png)`:**
+* SQL Код
 ```sql
 SELECT e1.first_name || ' ' || e1.last_name AS employee,
       e1.title AS employee_title,
@@ -171,9 +190,11 @@ FROM employees e1
 LEFT JOIN employees e2 ON e1.reports_to = e2.employee_id
 ORDER BY e2.last_name, e1.last_name;
 ```
-
+*Скріншот
+* ![Виклик 2.2](./screenshots/виклик2.2.png):**
+* 
 #### 9. Віконні функції ранжування
-* **SQL Код `![Виклик 2.3](./screenshots/виклик2.3.png)`:**
+* SQL Код
 ```sql
 SELECT p.product_name,
       c.category_name,
@@ -185,10 +206,12 @@ FROM products p
 JOIN categories c ON p.category_id = c.category_id
 ORDER BY c.category_name, p.unit_price DESC;
 ```
+*Скріншот
+* ![Виклик 2.3](./screenshots/виклик2.3.png):**
 
 ---
 
-## ❓ Відповіді на контрольні запитання
+##  Відповіді на контрольні запитання
 
 **1. В чому різниця між INNER JOIN та LEFT JOIN? Коли доцільно використовувати кожен з них в контексті навчальної бази даних?**
 * **INNER JOIN** повертає лише ті рядки, для яких є збіги в обох об'єднуваних таблицях (наприклад, товари, які обов'язково належать до існуючої категорії). 
@@ -229,5 +252,5 @@ ORDER BY c.category_name, p.unit_price DESC;
 
 ---
 
-## 🎉 Висновок
+## Висновок
 Під час виконання лабораторної роботи було успішно освоєно складні SQL-запити, реалізовано багаторівневі з'єднання таблиць, групування, підзапити та віконні функції. Усі результати перевірені та задокументовані за допомогою практичних скріншотів у середовищі PostgreSQL.
